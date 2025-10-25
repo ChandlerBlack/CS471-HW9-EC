@@ -26,12 +26,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.sql.DataSource;
+
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
+
 
 @Controller
 @SpringBootApplication
@@ -55,8 +59,8 @@ public class HerokuApplication {
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS table_timestamp_and_random_string (tick timestamp, random_string varchar(30))");
+      stmt.executeUpdate("INSERT INTO table_timestamp_and_random_string VALUES (now(), '" + getRandomString() + "')");
       ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
 
       ArrayList<String> output = new ArrayList<String>();
@@ -71,5 +75,32 @@ public class HerokuApplication {
       return "error";
     }
   }
+
+  public String getRandomString() {
+    // 1. Define the characters that can be used in the random string
+    final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    // 2. Define the desired length (matches the varchar(30) in your SQL)
+    final int LENGTH = 30;
+
+    // 3. Use SecureRandom for better randomness, especially for security-sensitive contexts
+    // If performance is a critical factor and security isn't, you could use new Random()
+    Random random = new SecureRandom();
+
+    // 4. Use a StringBuilder for efficient string construction
+    StringBuilder sb = new StringBuilder(LENGTH);
+
+    // 5. Loop to append random characters
+    for (int i = 0; i < LENGTH; i++) {
+      // Get a random index within the CHARACTERS string
+      int randomIndex = random.nextInt(CHARACTERS.length());
+
+      // Append the character at that index
+      sb.append(CHARACTERS.charAt(randomIndex));
+    }
+
+    return sb.toString();
+  }
+
 
 }
