@@ -65,7 +65,7 @@ public class HerokuApplication {
     @RequestMapping("/db")
     String db(Map<String, Object> model) {
         // Required log statement
-        System.out.println("Processing /db request - Name: Your Full Name");
+        System.out.println("Processing /db request - Chandler Black");
         
         try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
