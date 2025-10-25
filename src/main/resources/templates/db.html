@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'db')}">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
+    <h1>Database Records</h1>
+    <p>Last inserted record was inserted by accessing this page.</p>
 
+    <h2>Insert New Custom Record:</h2>
+    <p><a th:href="@{/dbinput}">Go to Input Form</a></p>
 
-<div class="container">
-  <h1>Database Output</h1>
-  <ul th:each="record : ${records}">
-    <li th:text="${record}"/>
-  </ul>
-</div>
+    <div th:each="record : ${records}">
+        <span th:text="${record}"></span>
+    </div>
 
 </body>
 </html>

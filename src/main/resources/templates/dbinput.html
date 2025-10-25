@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <h1>Add Custom String to Database</h1>
+
+    <form method="POST" th:action="@{/dbinput}">
+        <label for="userInput">Enter a String (max 30 characters):</label>
+        <input type="text" id="userInput" name="userInput" maxlength="30" required>
+        <button type="submit">Submit and View Database</button>
+    </form>
+
+    <p><a th:href="@{/db}">Back to Database View</a></p>
+
+</body>
+</html>
